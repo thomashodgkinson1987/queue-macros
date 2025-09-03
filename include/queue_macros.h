@@ -29,8 +29,8 @@
     size_t prefix##_queue_get_head(const name##Queue *prefix##_queue);      \
     size_t prefix##_queue_get_tail(const name##Queue *prefix##_queue);      \
                                                                             \
-    void prefix##_queue_enqueue(name##Queue *prefix##_queue, type item);    \
-    type prefix##_queue_dequeue(name##Queue *prefix##_queue);               \
+    void prefix##_queue_push(name##Queue *prefix##_queue, type item);       \
+    type prefix##_queue_pop(name##Queue *prefix##_queue);                   \
     type prefix##_queue_peek(const name##Queue *prefix##_queue);            \
     bool prefix##_queue_is_empty(const name##Queue *prefix##_queue);        \
     bool prefix##_queue_is_full(const name##Queue *prefix##_queue);         \
@@ -118,7 +118,7 @@
         return prefix##_queue->tail;                                           \
     }                                                                          \
                                                                                \
-    void prefix##_queue_enqueue(name##Queue *prefix##_queue, type item)        \
+    void prefix##_queue_push(name##Queue *prefix##_queue, type item)           \
     {                                                                          \
         prefix##_queue_grow_impl(prefix##_queue);                              \
         prefix##_queue->data[prefix##_queue->tail++] = item;                   \
@@ -126,11 +126,11 @@
         prefix##_queue->count++;                                               \
     }                                                                          \
                                                                                \
-    type prefix##_queue_dequeue(name##Queue *prefix##_queue)                   \
+    type prefix##_queue_pop(name##Queue *prefix##_queue)                       \
     {                                                                          \
         if (!prefix##_queue->count)                                            \
         {                                                                      \
-            fprintf(stderr, "%s: Cannot dequeue, queue is empty\n", __func__); \
+            fprintf(stderr, "%s: Cannot pop, queue is empty\n", __func__);     \
             exit(EXIT_FAILURE);                                                \
         }                                                                      \
         type item = prefix##_queue->data[prefix##_queue->head++];              \
@@ -221,7 +221,7 @@
         {                                                                      \
             type item = old_data[old_head++];                                  \
             old_head %= old_capacity;                                          \
-            prefix##_queue_enqueue(prefix##_queue, item);                      \
+            prefix##_queue_push(prefix##_queue, item);                         \
         }                                                                      \
                                                                                \
         free(old_data);                                                        \
