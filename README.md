@@ -1,0 +1,60 @@
+# queue-macros
+
+A simple, type-safe, generic queue implementation for C using macros. This library allows you to generate a complete queue API for any data type with just a few lines of code.
+
+The library is designed around an opaque pointer (handle) to ensure proper encapsulation. The internal state of the queue is not exposed to the consumer, who must interact with it through the public API.
+
+## Usage
+
+To create a queue for a specific type (e.g., `int`), you must declare the interface in a header file and define the implementation in a source file.
+
+**1. Declare the API in a header file (e.g., `int_queue.h`)**
+
+This step generates the forward declaration for the opaque struct and the public function prototypes.
+
+```c
+#ifndef INT_QUEUE_H
+#define INT_QUEUE_H
+
+#include "queue_macros.h"
+
+// Creates the typedef `IntQueue`
+DECLARE_QUEUE_STRUCT(int, Int)
+
+// Declares functions like `int_queue_create`, `int_queue_push`, etc.
+DECLARE_QUEUE_FUNCTIONS(int, Int, int)
+
+#endif // INT_QUEUE_H
+```
+
+**2. Define the implementation in a source file (e.g., `int_queue.c`)**
+
+This step generates the full definition of the struct and the bodies of all the functions.
+
+```c
+#include "int_queue.h"
+#include "queue_macros.h"
+
+// Defines the internal struct for `IntQueue`
+DEFINE_QUEUE_STRUCT(int, Int, int)
+
+// Defines the implementation of all `int_queue_*` functions
+DEFINE_QUEUE_FUNCTIONS(int, Int, int)
+```
+
+## Building and Running Tests
+
+The project uses CMake and includes a test suite that can be enabled with a CMake option.
+
+To configure, build, and run the tests, execute the following commands from the root of the project directory:
+
+```bash
+# 1. Configure CMake, enabling the test suite.
+cmake -S . -B build -DQUEUE_MACROS_BUILD_TESTS=ON
+
+# 2. Build the test executable.
+cmake --build build --target run_tests
+
+# 3. Run the tests.
+./build/tests/run_tests
+```
