@@ -178,6 +178,9 @@
                                                                                 \
     static inline bool prefix##_queue_grow_impl(name##Queue *prefix##_queue)    \
     {                                                                           \
+        if (prefix##_queue->count < prefix##_queue->capacity)                   \
+            return true;                                                        \
+                                                                                \
         if (prefix##_queue->capacity > SIZE_MAX / 2)                            \
         {                                                                       \
             fprintf(                                                            \
