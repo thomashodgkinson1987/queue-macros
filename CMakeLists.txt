@@ -6,10 +6,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 add_library(queue-macros INTERFACE)
 
-target_include_directories(queue-macros INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
+target_include_directories(queue-macros INTERFACE include)
 
 option(BUILD_TESTS "Build the queue-macros tests" OFF)
 
