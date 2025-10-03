@@ -33,6 +33,7 @@ This step generates the full definition of the struct and the bodies of all the 
 
 ```c
 #include "int_queue.h"
+
 #include "queue_macros.h"
 
 // Defines the internal struct for `IntQueue`
@@ -42,6 +43,17 @@ DEFINE_QUEUE_STRUCT(int, Int, int)
 DEFINE_QUEUE_FUNCTIONS(int, Int, int)
 ```
 
+## Development Environment
+
+This project is configured to keep build artefacts generated on the host separate from those generated inside the VS Code Dev Container. This is managed by the `BUILD_CONTEXT` environment variable, which, via `.vscode/settings.json`, directs CMake output to different subdirectories within the `build/` folder.
+
+*   **On the Host:** When launching VS Code from your local terminal, use the following command to ensure build files are placed in `build/host/`:
+    ```bash
+    BUILD_CONTEXT=host code .
+    ```
+
+*   **In the Dev Container:** When using the provided Dev Container (e.g., via "Reopen in Container"), the `BUILD_CONTEXT` variable is automatically set to `container` by the `devcontainer.json` configuration. Build files will be placed in `build/container/`.
+
 ## Building and Running Tests
 
 The project uses CMake and includes a test suite that can be enabled with a CMake option.
@@ -49,12 +61,7 @@ The project uses CMake and includes a test suite that can be enabled with a CMak
 To configure, build, and run the tests, execute the following commands from the root of the project directory:
 
 ```bash
-# 1. Configure CMake, enabling the test suite.
-cmake -S . -B build -DQUEUE_MACROS_BUILD_TESTS=ON
-
-# 2. Build the test executable.
-cmake --build build --target run_tests
-
-# 3. Run the tests.
-./build/tests/run_tests
+cmake -S . -B build -DBUILD_TESTS=ON
+cmake --build build
+ctest --test-dir build
 ```
