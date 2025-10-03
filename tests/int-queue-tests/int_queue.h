@@ -1,0 +1,9 @@
+#ifndef QUEUE_MACROS_INT_QUEUE_H
+#define QUEUE_MACROS_INT_QUEUE_H
+
+#include "queue_macros.h"
+
+DECLARE_QUEUE_STRUCT(int, Int)
+DECLARE_QUEUE_FUNCTIONS(int, Int, int)
+
+#endif // QUEUE_MACROS_INT_QUEUE_H
